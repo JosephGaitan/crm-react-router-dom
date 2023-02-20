@@ -20,7 +20,7 @@
                 Edit
                 </button> 
                 <button 
-                className="text-xs text-red-700 hover:text-red-800 cursor-pointer"
+                className="text-xs text-red-600 hover:text-red-700 cursor-pointer"
                 type="button"
                 >
                 Delete
