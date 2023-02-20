@@ -1,6 +1,7 @@
-import { useNavigate, Form, useActionData } from "react-router-dom";
+import { useNavigate, Form, useActionData, redirect } from "react-router-dom";
 import Formulario from "../components/Formulario";
 import Error from "../components/Error";
+import { agregarCliente } from "../data/clientes";
 
 export async function action({request}) {
   const formData = await request.formData()
@@ -12,16 +13,19 @@ export async function action({request}) {
     error.push('all fields are mandatory')
   }
 
-  let regex = new RegExp("([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\"\(\[\]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])");
+  /**let regex = new RegExp("([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\"\(\[\]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])");
   if(!regex.test(email)) {
     error.push('The email is not valid')
-  }
+  }/** */
 
   // retornar en caso de error
   if(Object.keys(error).length){
-
     return error
   }
+
+  await agregarCliente(datos)
+  return redirect('/')
+
 }
 
 
@@ -56,7 +60,6 @@ console.log(error)
         </Error>)}
 
         <Form
-          noValidate
           method='post'
         >
           <Formulario />
