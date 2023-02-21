@@ -42,6 +42,14 @@
       "telefono": "3205263244",
       "notas": "ed",
       "id": 6
+    },
+    {
+      "nombre": "Miguel",
+      "empresa": "menoria",
+      "email": "menor@menor.com",
+      "telefono": "203424553",
+      "notas": "obvio",
+      "id": 7
     }
   ]
 }

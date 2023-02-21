@@ -12,8 +12,8 @@ export default function ErrorPage() {
             <p className="text-center">
                 There was an Error 
             </p>
-            <p className="text-center">
-                {error.message}
+            <p className="text-center text-2xl font-bold">
+                {error.statusText || error.message}
             </p>
             <p className="text-center">
                 Please contact us to inform about it: Email@email.com
