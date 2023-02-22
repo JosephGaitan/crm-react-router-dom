@@ -1,6 +1,7 @@
-import { Form, useNavigate, useLoaderData } from "react-router-dom";
-import { obtenerCliente } from "../data/clientes";
+import { Form, useNavigate, useLoaderData, useActionData, redirect } from "react-router-dom";
+import { obtenerCliente, actualizarCliente } from "../data/clientes";
 import Formulario from "../components/Formulario";
+import Error from "../components/Error";
 
 export async function loader({ params }) {
   const cliente = await obtenerCliente(params.clientId);
@@ -13,10 +14,33 @@ export async function loader({ params }) {
   return cliente;
 }
 
+export async function action({request, params}){
+    const formData = await request.formData()
+    const datos = Object.fromEntries(formData)
+  
+    const error = []
+    //validando
+    if(Object.values(datos).includes('')){
+      error.push('all fields are mandatory')
+    }
+  
+    // retornar en caso de error
+    if(Object.keys(error).length){
+      return error
+    }
+  
+    //actualizar cliente
+    await actualizarCliente(params.clientId, datos)
+    return redirect('/')
+  
+  }
+
+
+
 const EditarCliente = () => {
     const navigate = useNavigate()
     const cliente = useLoaderData()
-    console.log(cliente)
+    const error = useActionData()
 
   return (
     <div className="md:overflow-y-scroll md:max-h-screen">
@@ -34,7 +58,7 @@ const EditarCliente = () => {
 
       <div className=" bg-white shadow rounded-md md:w-3/4 mx-auto px-5 py-10 mb-20 mt-10">
         
-        {/*error?.length &&error.map((error, i) => <Error key={i}>{error}</Error>)*/}
+        {error?.length &&error.map((error, i) => <Error key={i}>{error}</Error>)}
 
         <Form method="post">
           <Formulario 
@@ -44,7 +68,7 @@ const EditarCliente = () => {
           <input
             type="submit"
             className="text-lg w-full mt-5 hover:bg-blue-800 cursor-pointer bg-blue-700 p-3 uppercase font-bold text-white rounded-sm"
-            value="Register the client"
+            value="Save changes"
           />
         </Form>
       </div>
